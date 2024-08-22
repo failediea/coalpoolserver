@@ -29,6 +29,10 @@ use coal_utils::{
     get_proof_and_config_with_busses, get_register_ix, get_reset_ix, proof_pubkey,
     COAL_TOKEN_DECIMALS,
 };
+use ore_utils::{
+    get_ore_auth_ix, get_ore_mine_ix, get_ore_register_ix,
+    get_ore_reset_ix, ore_proof_pubkey
+};
 use rand::Rng;
 use serde::Deserialize;
 use solana_account_decoder::UiAccountEncoding;
@@ -240,13 +244,17 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         error!("Failed to load proof.");
         info!("Creating proof account...");
 
-        let ix = get_register_ix(wallet.pubkey());
+        let coal_register_ix = get_register_ix(wallet.pubkey());
+        let ore_register_ix = get_ore_register_ix(wallet.pubkey());
 
         if let Ok((hash, _slot)) = rpc_client
             .get_latest_blockhash_with_commitment(rpc_client.commitment())
             .await
         {
-            let mut tx = Transaction::new_with_payer(&[ix], Some(&wallet.pubkey()));
+            let mut tx = Transaction::new_with_payer(
+                &[coal_register_ix, ore_register_ix], 
+                Some(&wallet.pubkey())
+            );
 
             tx.sign(&[&wallet], hash);
 
@@ -552,11 +560,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                                 text: String::from("Sending mine transaction..."),
                             });
 
-                            let mut cu_limit = 485_000;
+                            let mut cu_limit = 980_000;
                             let should_add_reset_ix = if let Some(config) = loaded_config {
                                 let time_until_reset = (config.last_reset_at + 300) - now as i64;
                                 if time_until_reset <= 5 {
-                                    cu_limit = 500_000;
+                                    cu_limit += 20_000;
                                     true
                                 } else {
                                     false
@@ -573,19 +581,20 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                                 ComputeBudgetInstruction::set_compute_unit_price(prio_fee);
                             ixs.push(prio_fee_ix);
 
-                            let noop_ix = get_auth_ix(signer.pubkey());
-                            let noop_ix_clone = noop_ix.clone();
-                            ixs.push(noop_ix);
-                            ixs.push(noop_ix_clone);
+                            let ore_noop_ix = get_ore_auth_ix(signer.pubkey());
+                            let coal_apinoop_ix = get_auth_ix(signer.pubkey());
+                            ixs.push(ore_noop_ix);
+                            ixs.push(coal_apinoop_ix);
 
                             if should_add_reset_ix {
                                 let reset_ix = get_reset_ix(signer.pubkey());
                                 ixs.push(reset_ix);
                             }
 
-
-                            let ix_mine = get_mine_ix(signer.pubkey(), best_solution, bus);
-                            ixs.push(ix_mine);
+                            let coal_mine_ix = get_mine_ix(signer.pubkey(), best_solution, bus);
+                            let ore_mine_ix = get_ore_mine_ix(signer.pubkey(), best_solution, bus);
+                            ixs.push(coal_mine_ix);
+                            ixs.push(ore_mine_ix);
 
                             if let Ok((hash, _slot)) = rpc_client
                                 .get_latest_blockhash_with_commitment(rpc_client.commitment())
