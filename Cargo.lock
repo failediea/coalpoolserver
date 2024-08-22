@@ -971,6 +971,77 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1462739cb27611015575c0c11df5df7601141071f07518d56fcc1be504cbec97"
 
 [[package]]
+name = "coal-api"
+version = "2.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f8ea40c3c4609c7e86416222e329e2044f236aa8e6a0f0d957d4c2c8a8a4aa9c"
+dependencies = [
+ "array-const-fn-init",
+ "bytemuck",
+ "coal-utils",
+ "const-crypto",
+ "drillx_2",
+ "mpl-token-metadata",
+ "num_enum 0.7.3",
+ "solana-program",
+ "spl-associated-token-account",
+ "spl-token",
+ "static_assertions",
+ "thiserror",
+]
+
+[[package]]
+name = "coal-hq-server"
+version = "0.1.0"
+dependencies = [
+ "axum",
+ "axum-extra",
+ "base64 0.22.1",
+ "bincode",
+ "bytemuck",
+ "chrono",
+ "clap 4.5.14",
+ "coal-api",
+ "coal-utils",
+ "crossbeam-channel",
+ "deadpool-diesel",
+ "diesel",
+ "dotenv",
+ "drillx_2",
+ "futures",
+ "futures-util",
+ "ore-api",
+ "ore-utils",
+ "rand 0.8.5",
+ "serde",
+ "serde_json",
+ "solana-account-decoder",
+ "solana-client",
+ "solana-sdk",
+ "solana-transaction-status",
+ "spl-associated-token-account",
+ "spl-token",
+ "tokio",
+ "tower",
+ "tower-http",
+ "tracing",
+ "tracing-appender",
+ "tracing-subscriber",
+]
+
+[[package]]
+name = "coal-utils"
+version = "2.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bb26b94f251538acc2605e4656652c37a86cf23490bad4b68c1c46308eb81f28"
+dependencies = [
+ "bytemuck",
+ "solana-program",
+ "spl-associated-token-account",
+ "spl-token",
+]
+
+[[package]]
 name = "colorchoice"
 version = "1.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1424,9 +1495,22 @@ checksum = "77c90badedccf4105eca100756a0b1289e191f6fcbdadd3cee1d2f614f97da8f"
 
 [[package]]
 name = "drillx"
-version = "2.0.0"
+version = "2.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0c5fd3a8f11a6420d6efb1952c8c2e788627cb2c9e834537dc4b6bd036461646"
+checksum = "9f1b6097a8aeb360dc83cad60047b42cfabf54a56b81a75e254f5854211a7475"
+dependencies = [
+ "equix",
+ "serde",
+ "sha3 0.10.8",
+ "solana-program",
+ "strum",
+]
+
+[[package]]
+name = "drillx_2"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "af4e3aca4ae86ab0d0050f50b322adab7c0e93904896a5c60bdb33324ea1d36a"
 dependencies = [
  "equix",
  "serde",
@@ -2749,43 +2833,6 @@ dependencies = [
  "spl-token",
  "static_assertions",
  "thiserror",
-]
-
-[[package]]
-name = "ore-hq-server"
-version = "0.1.0"
-dependencies = [
- "axum",
- "axum-extra",
- "base64 0.22.1",
- "bincode",
- "bytemuck",
- "chrono",
- "clap 4.5.14",
- "crossbeam-channel",
- "deadpool-diesel",
- "diesel",
- "dotenv",
- "drillx",
- "futures",
- "futures-util",
- "ore-api",
- "ore-utils",
- "rand 0.8.5",
- "serde",
- "serde_json",
- "solana-account-decoder",
- "solana-client",
- "solana-sdk",
- "solana-transaction-status",
- "spl-associated-token-account",
- "spl-token",
- "tokio",
- "tower",
- "tower-http",
- "tracing",
- "tracing-appender",
- "tracing-subscriber",
 ]
 
 [[package]]
