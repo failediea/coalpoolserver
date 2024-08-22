@@ -29,10 +29,7 @@ use coal_utils::{
     get_proof_and_config_with_busses, get_register_ix, get_reset_ix, proof_pubkey,
     COAL_TOKEN_DECIMALS,
 };
-use ore_utils::{
-    get_ore_auth_ix, get_ore_mine_ix, get_ore_register_ix,
-    get_ore_reset_ix, ore_proof_pubkey
-};
+use ore_utils::{get_ore_auth_ix, get_ore_mine_ix, get_ore_register_ix};
 use rand::Rng;
 use serde::Deserialize;
 use solana_account_decoder::UiAccountEncoding;
@@ -123,6 +120,7 @@ pub struct Config {
 }
 
 mod coal_utils;
+mod ore_utils;
 
 #[derive(Parser, Debug)]
 #[command(version, author, about, long_about = None)]

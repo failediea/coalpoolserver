@@ -1,7 +1,10 @@
+use drillx_2::Solution;
 use ore_api::{
+  consts::{PROOF, BUS_ADDRESSES},
   instruction,
   ID as ORE_ID,
 };
+use coal_api::instruction::mine_ore;
 use solana_sdk::{
   pubkey::Pubkey,
   instruction::Instruction,
@@ -9,12 +12,12 @@ use solana_sdk::{
 
 
 pub fn get_ore_auth_ix(signer: Pubkey) -> Instruction {
-  let proof = proof_pubkey(signer);
+  let proof = ore_proof_pubkey(signer);
   instruction::auth(proof)
 }
 
-pub fn get_mine_ix(signer: Pubkey, solution: Solution, bus: usize) -> Instruction {
-  instruction::mine(signer, signer, BUS_ADDRESSES[bus], solution)
+pub fn get_ore_mine_ix(signer: Pubkey, solution: Solution, bus: usize) -> Instruction {
+  mine_ore(signer, signer, BUS_ADDRESSES[bus], solution)
 }
 
 pub fn get_ore_register_ix(signer: Pubkey) -> Instruction {
